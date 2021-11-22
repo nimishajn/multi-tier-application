@@ -1,0 +1,9 @@
+FROM ubuntu
+
+RUN apt-get update \
+    && apt-get install mysql-server net-tools  -y 
+
+ADD https://gitlab.com/crest1/devops_test/-/raw/master/sql/create_db_table.sql create_db_table.sql
+RUN mkdir -p /var/run/mysqld
+RUN mysqld_safe  < create_db_table.sql 
+RUN sed -i 's/127.0.0.1/*/g' /etc/mysql/mysql.conf.d/mysqld.cnf 
